@@ -154,11 +154,11 @@ void AfficherClassement(void){
     }
     else{
         printf("----------------------------- CLASSEMENT ----------------------------\n");
-        printf("[%s] %50s |  SCORE |\n", "GRADE", "NOM");
+        printf("[%5s] %50s |  SCORE |\n", "RANG", "NOM");
         printf("---------------------------------------------------------------------\n");
         for (int i=0; i<nbJoueurs; i++){
             if (i==0){
-                printf("[\033[0;30;103m%5d\033[0m] %50s | %6d |\n", i+1, classementsNom[i], classementsScore[i]);
+                printf("[\033[48;5;226m%5d\033[0m] %50s | %6d |\n", i+1, classementsNom[i], classementsScore[i]);
             }
             else if (i==1){
                 printf("[\033[48;5;8m%5d\033[0m] %50s | %6d |\n", i+1, classementsNom[i], classementsScore[i]);

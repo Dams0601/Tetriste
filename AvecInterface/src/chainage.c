@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <MLV/MLV_all.h>
 
 
 void SupprimerForme(Piece* piece){
@@ -52,6 +53,7 @@ void SupprimerCouleur(Piece* piece){
 void DisparaitrePieces(Plateau* plateau, int* score, char typeDeSuppression, char* nom, Piece* tabPieces[], int combo){
     // CAS : card < 3
     if (plateau->card<3){
+	MLV_actualise_window();
         return;
     }
     // CAS : card = 3
@@ -59,7 +61,7 @@ void DisparaitrePieces(Plateau* plateau, int* score, char typeDeSuppression, cha
         // Si on a les 3 formes identiques
         if (((plateau->premier->forme == plateau->premier->suiv->forme) && (plateau->premier->forme ==  plateau->premier->suiv->suiv->forme))||((plateau->premier->couleur == plateau->premier->suiv->couleur) && (plateau->premier->couleur ==  plateau->premier->suiv->suiv->couleur))){
             // Ajouter les points
-            AjouterPoint(score, typeDeSuppression, combo);
+            //AjouterPoint(score, typeDeSuppression, combo);
 
             // Enlever des listes doublement chainees forme et couleur (mais tjrs presente sur le plateau)
             Piece* dernier = RechercherDernier(plateau);
@@ -92,7 +94,7 @@ void DisparaitrePieces(Plateau* plateau, int* score, char typeDeSuppression, cha
             printf("\033[0;0H");
             
 
-            AfficherJeu(nom, score, tabPieces, plateau);
+           
             // Affichage d'un combo
             if (combo>1){
                 printf("           COMBO x%d\n", combo);
@@ -102,6 +104,7 @@ void DisparaitrePieces(Plateau* plateau, int* score, char typeDeSuppression, cha
             // Appel recursif pour gerer les suppressions en cascade
             DisparaitrePieces(plateau, score, typeDeSuppression, nom, tabPieces, combo+1);
         }
+	MLV_actualise_window();
     }
     else {
         // Teste la tete
@@ -139,7 +142,7 @@ void DisparaitrePieces(Plateau* plateau, int* score, char typeDeSuppression, cha
 
                 printf("\033[2J");
                 printf("\033[0;0H");
-                AfficherJeu(nom, score, tabPieces, plateau);
+                
                 if (combo>1){
                     printf("           COMBO x%d\n", combo);
                     usleep(1200000);
@@ -148,6 +151,8 @@ void DisparaitrePieces(Plateau* plateau, int* score, char typeDeSuppression, cha
 
                 // Appel recursif pour gerer les suppressions en cascade
                 DisparaitrePieces(plateau, score, typeDeSuppression, nom, tabPieces, combo+1);
+		MLV_actualise_window();
+		
 
                 return;
             } 
@@ -181,7 +186,7 @@ void DisparaitrePieces(Plateau* plateau, int* score, char typeDeSuppression, cha
 
                 printf("\033[2J");
                 printf("\033[0;0H");
-                AfficherJeu(nom, score, tabPieces, plateau);
+ 
                 if (combo>1){
                     printf("           COMBO x%d\n", combo);
                     usleep(1200000);
@@ -190,6 +195,9 @@ void DisparaitrePieces(Plateau* plateau, int* score, char typeDeSuppression, cha
 
                 // Appel recursif pour gerer les suppressions en cascade
                 DisparaitrePieces(plateau, score, typeDeSuppression, nom, tabPieces, combo+1);
+		MLV_actualise_window();
+		
+	
 
 
                 return;
@@ -203,6 +211,7 @@ void DecalageForme(Plateau* plateau, char forme){
 	Piece* dernier = TrouverDernierForme(plateau, forme);
     // Aucune pièce du type [forme] sur le jeu
 	if(dernier == NULL){
+		MLV_actualise_window();
 		return;
 	}
 	Piece * courant = dernier->precForme;
@@ -249,6 +258,7 @@ void DecalageCouleur(Plateau* plateau,char couleur){
 	Piece* dernier = TrouverDernierCouleur(plateau, couleur);
     // Aucune pièce du type [couleur] sur le jeu
 	if(dernier == NULL){
+		MLV_actualise_window();
 		return;
 	}
 	Piece* courant=dernier->precCouleur;
@@ -294,6 +304,7 @@ void DecalageCouleur(Plateau* plateau,char couleur){
 }	
 
 void InsererDroite(Plateau* plateau, Piece* piece){
+
     // Double chaînage de la forme de la piece
     Piece* dernierForme = TrouverDernierForme(plateau, piece->forme);
     if (dernierForme == NULL){

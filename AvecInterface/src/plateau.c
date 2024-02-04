@@ -8,7 +8,7 @@
 #include <time.h>
 #include <unistd.h>
 
-Plateau* InitialiserPlateau(void){
+Plateau* InitialiserPlateau(){
     Plateau* plateau = malloc(sizeof(Plateau));
     if (plateau==NULL){
         return NULL;
